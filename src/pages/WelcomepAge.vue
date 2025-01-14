@@ -30,27 +30,31 @@
     <!-- Login Button -->
     <div class="row full-width q-mt-md">
       <div class="col">
-        <q-btn
-          rounded
-          size="lg"
-          class="full-width"
-          color="indigo-5"
-          label="LOGIN"
-        />
+        <router-link to="/login">
+          <q-btn
+            rounded
+            size="lg"
+            class="full-width"
+            color="indigo-5"
+            label="LOGIN"
+          />
+        </router-link>
       </div>
     </div>
 
     <!-- Register Button -->
     <div class="row full-width q-mt-sm">
       <div class="col">
-        <q-btn
-          size="lg"
-          rounded
-          class="full-width"
-          outline
-          color="black"
-          label="Register"
-        />
+        <router-link to="/register">
+          <q-btn
+            size="lg"
+            rounded
+            class="full-width"
+            outline
+            color="black"
+            label="Register"
+          />
+        </router-link>
       </div>
     </div>
   </div>
