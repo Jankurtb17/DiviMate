@@ -12,7 +12,7 @@
       </div>
 
       <div class="flex justify-start full-width">
-        <span class="text-grey-9 login-account-txt">Login to your account</span>
+        <span class="text-grey-9 login-account-txt">Create an account</span>
       </div>
 
       <div class="row form">
@@ -20,23 +20,40 @@
           class="col-12"
           outlined
           type="email"
-          v-model="loginForm.username"
+          v-model="registerForm.username"
           label="Email"
           :rules="emailRules"
         />
         <q-input
           label="Password"
           class="col-12"
-          v-model="loginForm.password"
+          v-model="registerForm.password"
           outlined
-          :type="isPwd ? 'password' : 'text'"
+          :type="isPassword ? 'password' : 'text'"
           :rules="passwordRules"
         >
           <template v-slot:append>
             <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
+              :name="isPassword ? 'visibility_off' : 'visibility'"
               class="cursor-pointer"
-              @click="isPwd = !isPwd"
+              @click="isPassword = !isPassword"
+            />
+          </template>
+        </q-input>
+
+        <q-input
+          label="Confirm Password"
+          class="col-12"
+          v-model="registerForm.confirmPassword"
+          outlined
+          :type="isConfirmPassword ? 'password' : 'text'"
+          :rules="confirmPasswordRules"
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="isConfirmPassword ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isConfirmPassword = !isConfirmPassword"
             />
           </template>
         </q-input>
@@ -47,30 +64,35 @@
             size="lg"
             class="full-width"
             color="indigo-6"
-            label="Login"
+            label="Register"
             text-color="white"
           />
         </div>
       </div>
 
-      <div class="flex justify-end full-width text-subtitle2 text-indigo-9">
-        <span>Forgot password</span>
-      </div>
       <div class="row items-center full-width">
         <q-separator class="col" />
-        <div class="col-grow q-mx-sm">OR</div>
+        <div class="col-grow q-mx-sm">or register with</div>
         <q-separator class="col" />
       </div>
 
       <div class="full-width">
-        <GoogleSignin />
+        <q-btn
+          push
+          size="lg"
+          class="full-width"
+          color="white"
+          label="Sign with google"
+          text-color="orange"
+          icon="logo-google"
+        />
       </div>
 
       <div>
         <span
-          >Don't have an account?
-          <router-link to="register">Register here</router-link></span
-        >
+          >Already had an account?.
+          <router-link to="/login">Login here</router-link>
+        </span>
       </div>
     </q-page>
   </div>
@@ -79,18 +101,20 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { useRules } from '../composables/useRules';
-import GoogleSignin from '../components/GoogleLogin/GoogleSignin.vue';
-const { emailRules, passwordRules } = useRules();
-const isPwd = ref(true);
+const { emailRules, passwordRules, confirmPasswordRules } = useRules();
+const isPassword = ref(true);
+const isConfirmPassword = ref(true);
 
 interface Form {
   username: string;
   password: string;
+  confirmPassword: string;
 }
 
-const loginForm = reactive<Form>({
+const registerForm = reactive<Form>({
   username: '',
   password: '',
+  confirmPassword: '',
 });
 </script>
 

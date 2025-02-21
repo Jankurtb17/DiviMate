@@ -4,7 +4,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     components: {
-      MainPage: () => import('pages/WelcomePage.vue'),
+      MainPage: () => import('pages/LoginPage.vue'),
     },
   },
   {
@@ -13,12 +13,19 @@ const routes: RouteRecordRaw[] = [
       Login: () => import('pages/LoginPage.vue'),
     },
   },
-
+  {
+    path: '/register',
+    components: {
+      Login: () => import('pages/RegisterPage.vue'),
+    },
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue'),
+    components: {
+      Login: () => import('pages/ErrorNotFound.vue'),
+    },
   },
 ];
 
