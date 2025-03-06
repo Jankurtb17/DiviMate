@@ -19,6 +19,12 @@ const routes: RouteRecordRaw[] = [
       Login: () => import('pages/RegisterPage.vue'),
     },
   },
+  {
+    path: '/verify-user',
+    components: {
+      Login: () => import('pages/VerifyUser.vue'),
+    },
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
