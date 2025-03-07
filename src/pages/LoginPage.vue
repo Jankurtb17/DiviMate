@@ -1,13 +1,9 @@
 <template>
   <div class="q-pa-lg">
-    <q-page class="login-page window-height">
+    <q-page class="platform-android platform-ios login-page window-height">
       <div class="logo">
         <div class="logo-container">
-          <img
-            src="../assets/svg/LogoLogin.svg"
-            class="indigo-5"
-            alt="App logo"
-          />
+          <img src="../assets/svg/LogoLogin.svg" class="indigo-5" alt="App logo" />
         </div>
       </div>
 
@@ -16,40 +12,16 @@
       </div>
 
       <div class="row form">
-        <q-input
-          class="col-12"
-          outlined
-          type="email"
-          v-model="loginForm.username"
-          label="Email"
-          :rules="emailRules"
-        />
-        <q-input
-          label="Password"
-          class="col-12"
-          v-model="loginForm.password"
-          outlined
-          :type="isPwd ? 'password' : 'text'"
-          :rules="passwordRules"
-        >
+        <q-input class="col-12" outlined type="email" v-model="loginForm.username" label="Email" :rules="emailRules" />
+        <q-input label="Password" class="col-12" v-model="loginForm.password" outlined
+          :type="isPwd ? 'password' : 'text'" :rules="passwordRules">
           <template v-slot:append>
-            <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPwd = !isPwd"
-            />
+            <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd" />
           </template>
         </q-input>
 
         <div class="full-width">
-          <q-btn
-            push
-            size="lg"
-            class="full-width"
-            color="indigo-6"
-            label="Login"
-            text-color="white"
-          />
+          <q-btn push size="lg" class="full-width" color="indigo-6" label="Login" text-color="white" />
         </div>
       </div>
 
@@ -67,10 +39,8 @@
       </div>
 
       <div>
-        <span
-          >Don't have an account?
-          <router-link to="register">Register here</router-link></span
-        >
+        <span>Don't have an account?
+          <router-link to="register">Register here</router-link></span>
       </div>
     </q-page>
   </div>
