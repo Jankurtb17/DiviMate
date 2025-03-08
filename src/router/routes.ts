@@ -25,6 +25,24 @@ const routes: RouteRecordRaw[] = [
       Login: () => import('pages/VerifyUser.vue'),
     },
   },
+  {
+    path: '/forgot-password',
+    components: {
+      Login: () => import('pages/ForgotPassword.vue'),
+    },
+  },
+  {
+    path: '/successfully-forgot-password',
+    components: {
+      Login: () => import('pages/SuccessfullyForgotPassword.vue'),
+    },
+  },
+  {
+    path: '/create-password',
+    components: {
+      Login: () => import('pages/CreateNewPassword.vue'),
+    },
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
