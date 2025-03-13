@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md ">
+  <div class="q-pa-lg ">
     <q-icon name="keyboard_backspace" size="20px" color="grey-8" @click="returnBack" />
     <div class="verify-page ">
       <span class="text-h5 text-primary text-bold">Verification</span>

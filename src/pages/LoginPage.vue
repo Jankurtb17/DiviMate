@@ -26,7 +26,7 @@
       </div>
 
       <div class="flex justify-end full-width text-subtitle2 text-indigo-9">
-        <span>Forgot password</span>
+        <span @click="redirectToForgotPassword">Forgot password</span>
       </div>
       <div class="row items-center full-width">
         <q-separator class="col" />
@@ -50,6 +50,8 @@
 import { reactive, ref } from 'vue';
 import { useRules } from '../composables/useRules';
 import GoogleSignin from '../components/GoogleLogin/GoogleSignin.vue';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const { emailRules, passwordRules } = useRules();
 const isPwd = ref(true);
 
@@ -62,6 +64,10 @@ const loginForm = reactive<Form>({
   username: '',
   password: '',
 });
+
+const redirectToForgotPassword = () => {
+  router.push('/forgot-password')
+}
 </script>
 
 <style scoped>
