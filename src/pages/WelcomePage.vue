@@ -1,5 +1,5 @@
 <template>
-  <q-page class="welcome-page q-pa-md">
+  <q-page class="welcome-page q-pa-lg">
     <img src="../assets/svg/checklist.svg" />
     <span class="text-h3 text-weight-bolder text-indigo-5">Welcome</span>
     <p class="text-h6 text-center text-weight-medium">Effortlessly split your bill <br />with your friends
