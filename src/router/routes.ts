@@ -24,6 +24,7 @@ const routes: RouteRecordRaw[] = [
     components: {
       Login: () => import('pages/VerifyUser.vue'),
     },
+    props: true
   },
   {
     path: '/forgot-password',
@@ -42,6 +43,12 @@ const routes: RouteRecordRaw[] = [
     components: {
       Login: () => import('pages/CreateNewPassword.vue'),
     },
+  },
+  {
+    path: '/dashboard',
+    components: {
+      AuthenticatedUser: () => import('pages/auth/MainDashboard.vue')
+    }
   },
   // Always leave this as last one,
   // but you can also remove it

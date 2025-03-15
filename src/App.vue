@@ -7,6 +7,7 @@
           <component :is="Component" />
         </transition>
       </router-view>
+      <router-view name="AuthenticatedUser" />
     </q-page-container>
   </q-layout>
 </template>

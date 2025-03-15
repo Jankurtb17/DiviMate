@@ -4,7 +4,6 @@
     <div class="verify-page ">
       <span class="text-h5 text-primary text-bold">Verification</span>
       <p class="text-center">Please enter the one-time PIN(OTP) that we sent on <br /> your registered email address</p>
-
       <q-form @submit="verifyToken" class="token-verification-form">
         <div class="row q-gutter-sm justify-center">
           <!-- Six input boxes for the token -->
@@ -13,10 +12,8 @@
             input-style="text-align: center;" type="tel" inputmode="numeric" pattern="^[0-9]*$" />
         </div>
 
-        <span class="text-red-5" v-if="invalidToken">Invalid OTP. Please try again</span>
-
-        <q-btn push type="submit" class="q-mt-md full-width" color="indigo-6" label="Verify" text-color="white"
-          :disable="isTokenIncomplete" />
+        <q-btn size="lg" push type="submit" class="q-mt-md full-width" color="indigo-6" label="Verify"
+          text-color="white" :disable="isTokenIncomplete" />
 
         <p class="text-center q-ma-md text-grey-8" v-if="timer > 0">
           Resend Code in {{ timer }}
@@ -31,20 +28,21 @@
 </template>
 
 <script setup>
+import { verifyUser } from '../api/index';
 import { ref, computed, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+const route = useRoute()
+const email = route.query.email
 const router = useRouter()
 const timer = ref(120)
 // Initialize Quasar
 const $q = useQuasar();
-
 // Array to hold the 6 digits of the token
 const tokenDigits = ref(['', '', '', '', '', '']);
 
 // References to the input elements
 const tokenInputs = ref([]);
-const invalidToken = ref(false)
 // Check if the token is fully filled
 const isTokenIncomplete = computed(() => {
   return tokenDigits.value.some(digit => !digit);
@@ -79,24 +77,28 @@ const verifyToken = async () => {
     return;
   }
 
-  // Simulate API call to verify token
-  try {
-    // Replace this with your actual API call
-    console.log('Verifying token:', token);
-    invalidToken.value = false
-    $q.notify({
-      type: 'positive',
-      message: 'Token verified successfully!',
-    });
+  verifyUser({
+    email: email,
+    otp: token
+  }).then((response) => {
     // Reset the form or redirect user
     tokenDigits.value = ['', '', '', '', '', ''];
-  } catch (error) {
+    localStorage.setItem('access_token', response.data.access_token)
+    localStorage.setItem('refresh_token', response.data.refresh_token)
+    $q.notify({
+      type: 'positive',
+      message: 'OTP verified successfully!',
+    });
+    setTimeout(() => {
+      router.push('/dashboard')
+    }, 1500)
+  }).catch((error) => {
+    console.log(error)
     $q.notify({
       type: 'negative',
-      message: 'Invalid token. Please try again.',
+      message: error.response.data.detail,
     });
-    invalidToken.value = true
-  }
+  })
 };
 
 const countDownTimer = () => {

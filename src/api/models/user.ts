@@ -4,3 +4,7 @@ export type UserRegistration = {
     confirmPassword: string
 }
 
+export type VerifyUser = {
+    email: string,
+    otp: string
+}

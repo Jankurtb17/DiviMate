@@ -70,7 +70,7 @@ const createUser = () => {
   isLoading.value = true
   userRegistration(registerForm)
     .then(() => {
-      router.push('/verify-user')
+      router.push({ path: '/verify-user', query: { email: registerForm.email } })
     })
     .finally(() => {
       isLoading.value = false

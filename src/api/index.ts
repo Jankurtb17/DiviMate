@@ -1,8 +1,8 @@
-import axios from 'axios';
-import type { UserRegistration } from './models/user';
+import { api } from '../boot/axios'
+import type { UserRegistration, VerifyUser } from './models/user';
 
 export const googleSign = async (google_token: string) => {
-  const response = await axios.post('http://127.0.0.1:8000/auth/google', {
+  const response = await api.post('/auth/google', {
     token: google_token,
   });
 
@@ -11,7 +11,16 @@ export const googleSign = async (google_token: string) => {
 
 export const userRegistration = async(registration: UserRegistration) => {
   try {
-    const response = await axios.post('http://127.0.0.1:8000/v1/users/register', registration)
+    const response = await api.post('/v1/users/register', registration)
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
+export const verifyUser = async(verify_request: VerifyUser) => {
+  try {
+    const response = await api.post('/v1/users/verify', verify_request)
     return response
   } catch (error) {
     throw error
