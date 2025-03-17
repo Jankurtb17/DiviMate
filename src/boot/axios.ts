@@ -10,7 +10,7 @@ declare module '@vue/runtime-core' {
 }
 
 // Create the axios instance
-const api: AxiosInstance = axios.create({ baseURL: 'http://localhost:8000' });
+const api: AxiosInstance = axios.create({ baseURL: 'http://localhost:8000'  });
 
 // Add request interceptor
 api.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
