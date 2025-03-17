@@ -11,10 +11,10 @@
         <span class="text-grey-9 login-account-txt">Create an account</span>
       </div>
 
-      <div class="row form">
-        <q-input class="col-12" outlined type="email" v-model="registerForm.email" label="Email" :rules="emailRules" />
+      <q-form class="row form">
+        <q-input class="col-12" outlined type="email" v-model="registerForm.email" label="Email" :rules="emailRules" autocomplete="email"/>
         <q-input label="Password" class="col-12" v-model="registerForm.password" outlined
-          :type="isPassword ? 'password' : 'text'" :rules="passwordRules">
+          :type="isPassword ? 'password' : 'text'" :rules="passwordRules" autocomplete="new-password">
           <template v-slot:append>
             <q-icon :name="isPassword ? 'visibility_off' : 'visibility'" class="cursor-pointer"
               @click="isPassword = !isPassword" />
@@ -22,7 +22,7 @@
         </q-input>
 
         <q-input label="Confirm Password" class="col-12" v-model="registerForm.confirmPassword" outlined
-          :type="isConfirmPassword ? 'password' : 'text'" :rules="confirmPasswordRules">
+          :type="isConfirmPassword ? 'password' : 'text'" :rules="confirmPasswordRules" autocomplete="new-password">
           <template v-slot:append>
             <q-icon :name="isConfirmPassword ? 'visibility_off' : 'visibility'" class="cursor-pointer"
               @click="isConfirmPassword = !isConfirmPassword" />
@@ -33,7 +33,7 @@
           <q-btn push size="lg" class="full-width" color="indigo-6" label="Register" text-color="white" :loading="isLoading"
             @click="createUser" />
         </div>
-      </div>
+      </q-form>
       <div>
         <span>Already had an account?
           <router-link to="/login">Login here</router-link>

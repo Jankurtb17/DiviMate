@@ -11,19 +11,21 @@
         <span class="text-grey-9 login-account-txt">Login to your account</span>
       </div>
 
-      <div class="row form">
-        <q-input class="col-12" outlined type="email" v-model="loginForm.username" label="Email" :rules="emailRules" />
+      <q-form class="row form">
+        <q-input class="col-12" outlined type="email" v-model="loginForm.username" label="Email" :rules="emailRules"
+          autocomplete="email" />
         <q-input label="Password" class="col-12" v-model="loginForm.password" outlined
-          :type="isPwd ? 'password' : 'text'" :rules="passwordRules">
+          :type="isPwd ? 'password' : 'text'" :rules="passwordRules" autocomplete="current-password">
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd" />
           </template>
         </q-input>
 
         <div class="full-width">
-          <q-btn push size="lg" class="full-width" color="indigo-6" label="Login" text-color="white" />
+          <q-btn push size="lg" class="full-width" color="indigo-6" label="Login" text-color="white" @click="userLogin"
+            :loading="isLoading" />
         </div>
-      </div>
+      </q-form>
 
       <div class="flex justify-end full-width text-subtitle2 text-indigo-9">
         <span @click="redirectToForgotPassword">Forgot password</span>
@@ -51,10 +53,11 @@ import { reactive, ref } from 'vue';
 import { useRules } from '../composables/useRules';
 import GoogleSignin from '../components/GoogleLogin/GoogleSignin.vue';
 import { useRouter } from 'vue-router';
+import { loginUser } from '../api/index';
 const router = useRouter()
 const { emailRules, passwordRules } = useRules();
 const isPwd = ref(true);
-
+const isLoading = ref(false)
 interface Form {
   username: string;
   password: string;
@@ -67,6 +70,23 @@ const loginForm = reactive<Form>({
 
 const redirectToForgotPassword = () => {
   router.push('/forgot-password')
+}
+
+const userLogin = () => {
+  isLoading.value = true
+  loginUser(loginForm)
+    .then((response) => {
+      isLoading.value = false
+      localStorage.setItem('access_token', response.data.access_token)
+      localStorage.setItem('refresh_token', response.data.refresh_token)
+      setTimeout(() => {
+        router.push('/dashboard')
+      }, 1500)
+    })
+    .catch((error) => {
+      isLoading.value = false
+      throw error
+    })
 }
 </script>
 
