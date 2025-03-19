@@ -1,5 +1,5 @@
 import { api } from '../boot/axios'
-import type { UserRegistration, VerifyUser, UserLoginRequest } from './models/user';
+import type { UserRegistration, VerifyUser, UserLoginRequest, ResetRequest, ConfirmResetPassword } from './models/user';
 
 export const googleSign = async (google_token: string) => {
   const response = await api.post('/auth/google', {
@@ -38,6 +38,24 @@ export const loginUser = async (loginRequest: UserLoginRequest) => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
+export const forgotPassword = async (resetRequest: ResetRequest) => {
+  try {
+    const response = await api.post('/v1/users/forgot-password', resetRequest)
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
+export const confirmResetPassword = async (confirmResetPassword: ConfirmResetPassword) => {
+  try {
+    const response = await api.post('/v1/users/confirm-reset-password', confirmResetPassword)
     return response
   } catch (error) {
     throw error

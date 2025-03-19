@@ -8,15 +8,15 @@
           from your previous passwords. </p>
       </div>
 
-      <div class="row form">
-        <q-input label="New Password" class="col-12" v-model="registerForm.password" outlined
+      <q-form class="row form" @submit="resetPassword">
+        <q-input label="New Password" class="col-12" v-model="registerForm.newPassword" outlined
           :type="isPassword ? 'password' : 'text'" :rules="passwordRules">
           <template v-slot:append>
             <q-icon :name="isPassword ? 'visibility_off' : 'visibility'" class="cursor-pointer"
               @click="isPassword = !isPassword" />
           </template>
         </q-input>
-
+        
         <q-input label="Confirm Password" class="col-12" v-model="registerForm.confirmPassword" outlined
           :type="isConfirmPassword ? 'password' : 'text'" :rules="confirmPasswordRules">
           <template v-slot:append>
@@ -24,34 +24,57 @@
               @click="isConfirmPassword = !isConfirmPassword" />
           </template>
         </q-input>
-
         <div class="full-width">
-          <q-btn push size="lg" class="full-width" color="indigo-6" label="Submit" text-color="white" no-caps />
+          <q-btn push size="lg" type="submit" class="full-width" color="indigo-6" label="Submit" text-color="white" no-caps />
         </div>
-      </div>
+      </q-form>
 
     </q-page>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRules } from '../composables/useRules';
+import { useRoute } from 'vue-router';
+import { confirmResetPassword } from '../api/index'
+
+const route = useRoute()
+const token = route.query.token
 const { passwordRules, confirmPasswordRules } = useRules();
 const isPassword = ref(true);
 const isConfirmPassword = ref(true);
-
+const isLoading = ref(false)
 interface Form {
-  username: string;
-  password: string;
+  newPassword: string;
   confirmPassword: string;
 }
 
 const registerForm = reactive<Form>({
-  username: '',
-  password: '',
+  newPassword: '',
   confirmPassword: '',
 });
+
+if (typeof token !== 'string') {
+  throw new Error('Token is not a string or is missing');
+}
+
+const resetPassword = () => {
+  isLoading.value = true
+  confirmResetPassword({
+    token: token,
+    ...registerForm
+  }).then(() => {
+    isLoading.value = false
+  }).catch((error) => {
+    isLoading.value = false
+    console.error(error)
+  })
+}
+
+onMounted(() => {
+ 
+})
 </script>
 
 <style scoped>
