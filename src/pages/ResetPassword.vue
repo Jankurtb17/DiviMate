@@ -8,8 +8,8 @@
           from your previous passwords. </p>
       </div>
 
-      <div class="row form">
-        <q-input label="New Password" class="col-12" v-model="registerForm.password" outlined
+      <q-form class="row form" @submit="resetPassword">
+        <q-input label="New Password" class="col-12" v-model="registerForm.newPassword" outlined
           :type="isPassword ? 'password' : 'text'" :rules="passwordRules">
           <template v-slot:append>
             <q-icon :name="isPassword ? 'visibility_off' : 'visibility'" class="cursor-pointer"
@@ -24,34 +24,93 @@
               @click="isConfirmPassword = !isConfirmPassword" />
           </template>
         </q-input>
-
         <div class="full-width">
-          <q-btn push size="lg" class="full-width" color="indigo-6" label="Submit" text-color="white" no-caps />
+          <q-btn push size="lg" type="submit" class="full-width" color="indigo-6" label="Submit" text-color="white"
+            no-caps />
         </div>
-      </div>
+      </q-form>
 
     </q-page>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRules } from '../composables/useRules';
+import { useRoute } from 'vue-router';
+import { confirmResetPassword } from '../api/index'
+import { useQuasar } from 'quasar';
+// Initialize Quasar
+const $q = useQuasar();
+const route = useRoute()
+const token = route.query.token
 const { passwordRules, confirmPasswordRules } = useRules();
 const isPassword = ref(true);
 const isConfirmPassword = ref(true);
-
+const isLoading = ref(false)
 interface Form {
-  username: string;
-  password: string;
+  newPassword: string;
   confirmPassword: string;
 }
 
+interface ErrorArray {
+  ctx: [key: string],
+  input: string,
+  loc: Array<string>,
+  msg: string,
+  type: string
+}
+
+interface ApiErrorResponse {
+  response: {
+    data: {
+      detail: string | Array<ErrorArray>
+    };
+  };
+}
+
 const registerForm = reactive<Form>({
-  username: '',
-  password: '',
+  newPassword: '',
   confirmPassword: '',
 });
+
+if (typeof token !== 'string') {
+  throw new Error('Token is not a string or is missing');
+}
+
+const resetPassword = () => {
+  isLoading.value = true
+
+  confirmResetPassword({
+    token: token,
+    ...registerForm
+  }).then(() => {
+    isLoading.value = false
+    $q.notify({
+      type: 'positive',
+      message: 'Reset password successfully',
+    });
+  }).catch((error) => {
+    isLoading.value = false
+    const apiError = error as ApiErrorResponse;
+    let errorMessage = ''
+    console.log(apiError.response?.data?.detail)
+    if (typeof(apiError.response?.data?.detail) === 'string')  {
+      errorMessage = apiError.response?.data?.detail
+    } else {
+      errorMessage = apiError.response.data.detail![0].msg as string
+    }
+    $q.notify({
+      type: 'negative',
+      message: errorMessage,
+    });
+  })
+
+}
+
+onMounted(() => {
+
+})
 </script>
 
 <style scoped>
