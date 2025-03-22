@@ -34,9 +34,11 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/successfully-forgot-password',
+    name: 'successfully-forgot-password',
     components: {
       Login: () => import('pages/SuccessfullyForgotPassword.vue'),
     },
+    props: true
   },
   {
     path: '/reset-password',
